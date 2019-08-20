@@ -3,14 +3,14 @@ import java.util.Scanner;
 public class Duke {
     public static void main(String[] args) {
         greet();
-        echoIfInputNotBye();
+        echoWhileInputNotBye();
     }
 
     private static void greet() {
         dukeReply("Hello! My name is Duke!\nHow may I help you?");
     }
 
-    private static void echoIfInputNotBye() {
+    private static void echoWhileInputNotBye() {
         Scanner sc = new Scanner(System.in);
         String userInput = sc.nextLine();
         while (!userInput.equals("bye")) {
