@@ -5,8 +5,6 @@ import duke.task.Todo;
 import duke.task.Deadline;
 import duke.task.Event;
 
-import duke.InputParser;
-
 import duke.exception.InvalidTaskException;
 
 import java.util.Scanner;
