@@ -2,8 +2,6 @@ package duke.task;
 
 import duke.exception.InvalidTaskException;
 
-import java.util.LinkedList;
-
 public abstract class Task {
     protected String description;
     protected boolean isDone;
@@ -16,35 +14,10 @@ public abstract class Task {
 
     // Validations
 
-    public void validate() throws InvalidTaskException {
-        LinkedList<String> validityErrors = getValidityErrors();
-        if (!isValid(validityErrors)) {
-            throw new InvalidTaskException(prettifyValidityErrors(validityErrors));
-        }
-    }
-
-    public LinkedList<String> getValidityErrors() {
-        LinkedList<String> validityErrors = new LinkedList<>();
+    protected void validate() throws InvalidTaskException {
         if (description.isBlank()) {
-            validityErrors.add("Description cannot be blank.");
+            throw new InvalidTaskException("Description cannot be blank.");
         }
-        return validityErrors;
-    }
-
-    protected String prettifyValidityErrors(LinkedList<String> validityErrors) {
-        String prettyErrors = validityErrors.pop();
-        for (String error : validityErrors) {
-            prettyErrors += "\n" + error;
-        }
-        return prettyErrors;
-    }
-
-    public boolean isValid() {
-        return getValidityErrors().isEmpty();
-    }
-
-    protected boolean isValid(LinkedList<String> validityErrors) {
-        return validityErrors.isEmpty();
     }
 
     // Getter/setters

@@ -10,11 +10,20 @@ public class Deadline extends Task {
         this.dueDate = dueDate;
     }
 
+    // Validations
+
+    // Getters/setters
+
     public String getInfo() {
         return "[D]" + super.getInfo() + "(by: " + dueDate + ")";
     }
 
     public String getDueDate() {
         return dueDate;
+    }
+    
+    @Override
+    public String toString() {
+        return getInfo();
     }
 }

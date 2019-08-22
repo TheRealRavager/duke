@@ -7,7 +7,14 @@ public class Todo extends Task {
         super(description);
     }
 
+    // Getters/setters
+
     public String getInfo() {
         return "[T]" + super.getInfo();
+    }
+
+    @Override
+    public String toString() {
+        return getInfo();
     }
 }

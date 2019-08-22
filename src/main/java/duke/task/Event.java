@@ -16,4 +16,9 @@ public class Event extends Task {
     public String getInfo() {
         return "[E]" + super.getInfo() + "(at: " + startDateTime + "-" + endDateTime + ")";
     }
+
+    @Override
+    public String toString() {
+        return getInfo();
+    }
 }
