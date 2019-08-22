@@ -24,6 +24,7 @@ public class Duke {
     }
 
     // TODO: Create input parser to handle all this!
+    // TODO: Create "command" enum
     private static void respondToInput() {
         Scanner sc = new Scanner(System.in);
         String userInput = sc.nextLine();
@@ -32,12 +33,13 @@ public class Duke {
         while (!userInput.equals("bye")) {
             try {
                 // TODO: if list is empty, print out a different message
+                // note: below methods violate SRP (responsible for action + printing). To refactor in future.
                 if (userInput.equals("list")) {
                     displayList();
                 } else if (checkIsInputEquals(userInput, "done ")) {
                     // TODO: handle out of bounds exception (only 3 task but try to mark 4th as done)
                     // TODO: handle invalid input exception (non-integer after "done")
-                    Task task = tasks.get(Integer.parseInt(userInput.substring(5)) - 1);
+                    Task task = tasks.get(Integer.parseInt(userInput.substring("done ".length())) - 1);
                     task.markAsDone();
                     dukeReply("Successfully marked the following task as done:\n" + task.getInfo());
                 } else if (checkIsInputEquals(userInput, "todo ")) {
@@ -49,6 +51,10 @@ public class Duke {
                 } else if (checkIsInputEquals(userInput, "event ")) {
                     // TODO: and here
                     addAndDisplayNewEvent(userInput);
+                // Will throw error if wrong input, need to manage error better
+                } else if (checkIsInputEquals(userInput, "delete ")) {
+                    int taskIndex = Integer.parseInt(userInput.substring("delete ".length())) - 1;
+                    deleteAndDisplayTask(taskIndex);
                 } else {
                     dukeReply("I don't know what that means, sorry!");
                 }
@@ -113,6 +119,12 @@ public class Duke {
         Event newEvent = new Event(descriptionAndDateTimes[0], startAndEndDateTimes[0], startAndEndDateTimes[1]);
         tasks.add(newEvent);
         displayAddedTask(newEvent);
+    }
+
+    private static void deleteAndDisplayTask(int taskIndex) {
+        Task task = tasks.get(taskIndex);
+        tasks.remove(taskIndex);
+        dukeReply("I have removed the following task:\n  " + task + "\nNow you have " + tasks.size() + " tasks in the list.");
     }
 
     private static void dukeReply(String reply) {
