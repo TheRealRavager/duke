@@ -10,7 +10,26 @@ public class Event extends Task {
         super(description);
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
+        validate();
     }
+
+    protected void validate() throws InvalidTaskException {
+        String errorMessage = "";
+        if (description.isBlank()) {
+            errorMessage += "Description cannot be blank";
+        }
+        if (startDateTime.isBlank()) {
+            errorMessage += errorMessage.isBlank() ? "" : "\n";
+            errorMessage += "Start time cannot be blank";
+        }
+        if (startDateTime.isBlank()) {
+            errorMessage += errorMessage.isBlank() ? "" : "\n";
+            errorMessage += "End time cannot be blank";
+        }
+        throw new InvalidTaskException(errorMessage);
+    }
+
+    // Getters/setters
 
     // TODO: change to dateTime
     public String getInfo() {

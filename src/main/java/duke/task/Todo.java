@@ -5,6 +5,13 @@ import duke.exception.InvalidTaskException;
 public class Todo extends Task {
     public Todo(String description) throws InvalidTaskException {
         super(description);
+        validate();
+    }
+
+    protected void validate() throws InvalidTaskException {
+        if (description.isBlank()) {
+            throw new InvalidTaskException("Description cannot be blank");
+        }
     }
 
     // Getters/setters

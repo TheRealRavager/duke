@@ -6,19 +6,12 @@ public abstract class Task {
     protected String description;
     protected boolean isDone;
 
-    public Task(String description) throws InvalidTaskException {
+    public Task(String description) {
         this.description = description;
         this.isDone = false;
-        validate();
     }
 
-    // Validations
-
-    protected void validate() throws InvalidTaskException {
-        if (description.isBlank()) {
-            throw new InvalidTaskException("Description cannot be blank.");
-        }
-    }
+    protected abstract void validate() throws InvalidTaskException;
 
     // Getter/setters
 
