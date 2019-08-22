@@ -3,6 +3,7 @@ package duke.task;
 import duke.exception.InvalidTaskException;
 
 public class Event extends Task {
+    // TODO: change to dateTime
     private String startDateTime;
     private String endDateTime;
 
@@ -22,16 +23,18 @@ public class Event extends Task {
             errorMessage += errorMessage.isBlank() ? "" : "\n";
             errorMessage += "Start time cannot be blank";
         }
-        if (startDateTime.isBlank()) {
+        if (endDateTime.isBlank()) {
             errorMessage += errorMessage.isBlank() ? "" : "\n";
             errorMessage += "End time cannot be blank";
         }
-        throw new InvalidTaskException(errorMessage);
+        if (!errorMessage.isBlank()) {
+            throw new InvalidTaskException(errorMessage);
+        }
     }
 
     // Getters/setters
 
-    // TODO: change to dateTime
+    // TODO: display "date startTime-endTime" if same day, else "startDateTime - endDateTime"
     public String getInfo() {
         return "[E]" + super.getInfo() + "(at: " + startDateTime + "-" + endDateTime + ")";
     }

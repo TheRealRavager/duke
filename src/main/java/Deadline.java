@@ -22,7 +22,9 @@ public class Deadline extends Task {
             errorMessage += errorMessage.isBlank() ? "" : "\n";
             errorMessage += "Due date cannot be blank";
         }
-        throw new InvalidTaskException(errorMessage);
+        if (!errorMessage.isBlank()) {
+            throw new InvalidTaskException(errorMessage);
+        }
     }
 
     // Getters/setters

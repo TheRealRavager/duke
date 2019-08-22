@@ -5,6 +5,8 @@ import duke.task.Todo;
 import duke.task.Deadline;
 import duke.task.Event;
 
+import duke.InputParser;
+
 import duke.exception.InvalidTaskException;
 
 import java.util.Scanner;
@@ -21,6 +23,7 @@ public class Duke {
         dukeReply("Hello! My name is Duke!\nHow may I help you?");
     }
 
+    // TODO: Create input parser to handle all this!
     private static void respondToInput() {
         Scanner sc = new Scanner(System.in);
         String userInput = sc.nextLine();
@@ -52,6 +55,9 @@ public class Duke {
             }
             catch (InvalidTaskException e) {
                 dukeReply("Oops sorry you're missing some stuff!!\n" + e.getMessage());
+            }
+            catch (ArrayIndexOutOfBoundsException e) {
+                dukeReply("I didnt understand that, sorry!");
             }
             finally {
                 userInput = sc.nextLine();
@@ -93,22 +99,17 @@ public class Duke {
     }
 
     private static void addAndDisplayNewDeadline(String userInput) throws InvalidTaskException {
-        try {
-            String[] descriptionAndDate = userInput.substring("deadline ".length()).split("/by ");
-            String description = descriptionAndDate[0];
-            String dueDate = descriptionAndDate[1];
-            Deadline newDeadline = new Deadline(descriptionAndDate[0], descriptionAndDate[1]);
-            tasks.add(newDeadline);
-            displayAddedTask(newDeadline);
-        }
-        catch (ArrayIndexOutOfBoundsException e) {
-            throw new InvalidTaskException("???");
-        }
+        String[] descriptionAndDate = userInput.substring("deadline ".length()).split("/by ", 2);
+        String description = descriptionAndDate[0];
+        String dueDate = descriptionAndDate[1];
+        Deadline newDeadline = new Deadline(descriptionAndDate[0], descriptionAndDate[1]);
+        tasks.add(newDeadline);
+        displayAddedTask(newDeadline);
     }
 
     private static void addAndDisplayNewEvent(String userInput) throws InvalidTaskException {
-        String[] descriptionAndDateTimes = userInput.substring("event ".length()).split("/at ");
-        String[] startAndEndDateTimes = descriptionAndDateTimes[1].split("-");
+        String[] descriptionAndDateTimes = userInput.substring("event ".length()).split("/at ", 2);
+        String[] startAndEndDateTimes = descriptionAndDateTimes[1].split("-", 2);
         Event newEvent = new Event(descriptionAndDateTimes[0], startAndEndDateTimes[0], startAndEndDateTimes[1]);
         tasks.add(newEvent);
         displayAddedTask(newEvent);
