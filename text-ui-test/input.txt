@@ -1,0 +1,21 @@
+duke doesnt understand this command
+
+todo 
+todo create a proper todo!
+list
+deadline
+deadline this deadline is missing a date :(
+deadline still missing /by 
+deadline now correct /by like right now
+list
+event 
+event this is an incomplete event
+event still incomplete /at 
+event still same /at now
+event this is ok /at now - not now
+list
+delete 1
+list
+delete 2
+list
+bye
