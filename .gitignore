@@ -25,3 +25,4 @@ bin/
 *.zip
 *.tar.gz
 *.rar
+text-ui-test/ACTUAL.TXT
