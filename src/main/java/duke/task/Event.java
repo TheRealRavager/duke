@@ -11,18 +11,10 @@ public class Event extends Task {
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
 
-    public Event(String description, LocalDateTime startDateTime, LocalDateTime endDateTime) throws InvalidTaskException {
-        super(description);
+    public Event(String description, Boolean isDone, LocalDateTime startDateTime, LocalDateTime endDateTime) throws InvalidTaskException {
+        super(description, isDone);
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
-        validate();
-    }
-
-    public Event(String[] input) throws InvalidTaskException {
-        super(input[2]);
-        isDone = input[1].equals("1");
-        startDateTime = LocalDateTime.parse(input[3], eventDateTimeFormat);
-        endDateTime = LocalDateTime.parse(input[4], eventDateTimeFormat);
         validate();
     }
  

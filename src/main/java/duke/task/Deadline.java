@@ -10,16 +10,9 @@ public class Deadline extends Task {
     private static DateTimeFormatter prettifiedDateTimeFormat = DateTimeFormatter.ofPattern("d MMM yy h:mma");
     private LocalDateTime dueDate;
 
-    public Deadline(String description, LocalDateTime dueDate) throws InvalidTaskException {
-        super(description);
+    public Deadline(String description, Boolean isDone, LocalDateTime dueDate) throws InvalidTaskException {
+        super(description, isDone);
         this.dueDate = dueDate;
-        validate();
-    }
-
-    public Deadline(String[] input) throws InvalidTaskException {
-        super(input[2]);
-        isDone = input[1].equals("1");
-        dueDate = LocalDateTime.parse(input[3], dueDateFormat);
         validate();
     }
 

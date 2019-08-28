@@ -3,14 +3,8 @@ package duke.task;
 import duke.exception.InvalidTaskException;
 
 public class Todo extends Task {
-    public Todo(String description) throws InvalidTaskException {
-        super(description);
-        validate();
-    }
-
-    public Todo(String[] input) throws InvalidTaskException {
-        super(input[2]);
-        isDone = input[1].equals("1");
+    public Todo(String description, Boolean isDone) throws InvalidTaskException {
+        super(description, isDone);
         validate();
     }
 
