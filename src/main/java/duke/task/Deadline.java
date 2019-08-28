@@ -11,6 +11,13 @@ public class Deadline extends Task {
         validate();
     }
 
+    public Deadline(String[] input) throws InvalidTaskException {
+        super(input[2]);
+        isDone = input[1].equals("1");
+        dueDate = input[3];
+        validate();
+    }
+
     // Validations
 
     protected void validate() throws InvalidTaskException {
@@ -29,12 +36,12 @@ public class Deadline extends Task {
 
     // Getters/setters
 
-    public String getInfo() {
-        return "[D]" + super.getInfo() + "(by: " + dueDate + ")";
-    }
-
     public String getDueDate() {
         return dueDate;
+    }
+
+    public String getInfo() {
+        return "[D]" + super.getInfo() + "(by: " + dueDate + ")";
     }
 
     @Override
