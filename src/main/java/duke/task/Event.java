@@ -21,8 +21,8 @@ public class Event extends Task {
     public Event(String[] input) throws InvalidTaskException {
         super(input[2]);
         isDone = input[1].equals("1");
-        startDateTime = input[3];
-        endDateTime = input[4];
+        startDateTime = LocalDateTime.parse(input[3], eventDateTimeFormat);
+        endDateTime = LocalDateTime.parse(input[4], eventDateTimeFormat);
         validate();
     }
  
@@ -46,24 +46,24 @@ public class Event extends Task {
 
     // Getters/setters
 
-    public String getStartDateTime() {
-        return startDateTime;
+    public String getStringifiedStartDateTime() {
+        return startDateTime.format(eventDateTimeFormat);
     }
 
-    public String getEndDateTime() {
-        return endDateTime;
+    public String getStringifiedEndDateTime() {
+        return endDateTime.format(eventDateTimeFormat);
     }
 
     // TODO: display "date startTime-endTime" if same day, else "startDateTime - endDateTime"
     public String getInfo() {
-        return "[E]" + super.getInfo() + "(at: " + getStringifiedStartDateTime() + "-" + getStringifiedEndDateTime() + ")";
+        return "[E]" + super.getInfo() + "(at: " + getPrettyStartDateTime() + "-" + getPrettyEndDateTime() + ")";
     }
 
-    public String getStringifiedStartDateTime() {
+    public String getPrettyStartDateTime() {
         return startDateTime.format(prettifiedDateTimeFormat);
     }
 
-    public String getStringifiedEndDateTime() {
+    public String getPrettyEndDateTime() {
         return endDateTime.format(prettifiedDateTimeFormat);
     }
 
