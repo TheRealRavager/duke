@@ -2,10 +2,15 @@ package duke.task;
 
 import duke.exception.InvalidTaskException;
 
-public class Deadline extends Task {
-    private String dueDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
-    public Deadline(String description, String dueDate) throws InvalidTaskException {
+public class Deadline extends Task {
+    public static DateTimeFormatter dueDateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy HHmm");
+    private static DateTimeFormatter prettifiedDateTimeFormat = DateTimeFormatter.ofPattern("d MMM yy h:mma");
+    private LocalDateTime dueDate;
+
+    public Deadline(String description, LocalDateTime dueDate) throws InvalidTaskException {
         super(description);
         this.dueDate = dueDate;
         validate();
@@ -18,7 +23,7 @@ public class Deadline extends Task {
         if (description.isBlank()) {
             errorMessage += "Description cannot be blank";
         }
-        if (dueDate.isBlank()) {
+        if (dueDate == null) {
             errorMessage += errorMessage.isBlank() ? "" : "\n";
             errorMessage += "Due date cannot be blank";
         }
@@ -30,11 +35,11 @@ public class Deadline extends Task {
     // Getters/setters
 
     public String getInfo() {
-        return "[D]" + super.getInfo() + "(by: " + dueDate + ")";
+        return "[D]" + super.getInfo() + "(by: " + getStringifiedDueDate() + ")";
     }
 
-    public String getDueDate() {
-        return dueDate;
+    public String getStringifiedDueDate() {
+        return dueDate.format(prettifiedDateTimeFormat);
     }
 
     @Override
