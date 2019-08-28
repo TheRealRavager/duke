@@ -13,49 +13,49 @@ import java.util.Scanner;
 import java.util.ArrayList;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
+/**
+ * Main class for Duke chatbot.
+ * Handles user input.
+ */
 public class Duke {
+    /** Handles read/write to save file. */
     private static Storage storageHandler = new Storage();
+    /** List of current tasks. */
     private static ArrayList<Task> tasks = storageHandler.load();
+
     public static void main(String[] args) {
         greet();
         respondToInput();
     }
 
+    /**
+     * Sends a friendly message to the user.
+     */
     private static void greet() {
         dukeReply("Hello! My name is Duke!\nHow may I help you?");
     }
 
-    // TODO: Create input parser to handle all this!
-    // TODO: Create "command" enum
+    /**
+     * Responds to user input by determining which subsequent methods to call.
+     */
     private static void respondToInput() {
         Scanner sc = new Scanner(System.in);
         String userInput = sc.nextLine();
-        // May require refactor if performance is undesirably poor due to many string concatenations (review at towards end of project)
-        // Should refactor by extract method
         while (!userInput.equals("bye")) {
             try {
-                // TODO: if list is empty, print out a different message
-                // note: below methods violate SRP (responsible for action + printing). To refactor in future.
                 if (userInput.equals("list")) {
                     displayList();
                 } else if (checkIsInputEquals(userInput, "done ")) {
-                    // TODO: handle out of bounds exception (only 3 task but try to mark 4th as done)
-                    // TODO: handle invalid input exception (non-integer after "done")
                     Task task = tasks.get(Integer.parseInt(userInput.substring("done ".length())) - 1);
                     task.markAsDone();
                     dukeReply("Successfully marked the following task as done:\n" + task.getInfo());
                 } else if (checkIsInputEquals(userInput, "todo ")) {
-                    // TODO: handle exception cause the add and displays will throw oob exception methinks
                     addAndDisplayNewTodo(userInput);
                 } else if (checkIsInputEquals(userInput, "deadline ")) {
-                    // TODO: same here
                     addAndDisplayNewDeadline(userInput);
                 } else if (checkIsInputEquals(userInput, "event ")) {
-                    // TODO: and here
                     addAndDisplayNewEvent(userInput);
-                // Will throw error if wrong input, need to manage error better
                 } else if (checkIsInputEquals(userInput, "delete ")) {
                     int taskIndex = Integer.parseInt(userInput.substring("delete ".length())) - 1;
                     deleteAndDisplayTask(taskIndex);
@@ -77,6 +77,13 @@ public class Duke {
         sc.close();
     }
 
+    /**
+     * Returns true if the first substring of the input string is equal to the comparison string.
+     * 
+     * @param input is the input string being checked.
+     * @param comparisonString is the string being matched.
+     * @return true if the first substring of the input string is equal to the comparison string.
+     */
     private static boolean checkIsInputEquals(String input, String comparisonString) {
         if (input.length() < comparisonString.length()) {
             return false;
@@ -85,6 +92,9 @@ public class Duke {
         }
     }
 
+    /**
+     * Displays the contents of current task list.
+     */
     private static void displayList() {
         String finalOutput = "";
         boolean first = true;
@@ -98,10 +108,21 @@ public class Duke {
         dukeReply("Here are the tasks in your list:\n" + finalOutput);
     }
 
+    /**
+     * Displays the input task.
+     * 
+     * @param task the input task.
+     */
     private static void displayAddedTask(Task task) {
         dukeReply("Got it. I've added this task:\n  " + task.getInfo() + "\nNow you have " + tasks.size() + " tasks in the list.");
     }
 
+    /**
+     * Adds and subsequently displays a new todo created from the user input.
+     * 
+     * @param userInput string representing the todo the user intends to create.
+     * @throws InvalidTaskException when there are insufficient or incorrect parameters to initialize a todo.
+     */
     private static void addAndDisplayNewTodo(String userInput) throws InvalidTaskException {
         Todo newTodo = new Todo(userInput.substring("todo ".length()));
         tasks.add(newTodo);
@@ -109,7 +130,12 @@ public class Duke {
         displayAddedTask(newTodo);
     }
 
-    // TODO: add ability to detect improper datetime inputs
+    /**
+     * Adds and subsequently displays a new deadline created from the user input.
+     * 
+     * @param userInput string representing the deadline the user intends to create.
+     * @throws InvalidTaskException when there are insufficient or incorrect parameters to initialize a deadline.
+     */
     private static void addAndDisplayNewDeadline(String userInput) throws InvalidTaskException {
         String[] descriptionAndDate = userInput.substring("deadline ".length()).split("/by ", 2);
         String description = descriptionAndDate[0];
@@ -120,6 +146,12 @@ public class Duke {
         displayAddedTask(newDeadline);
     }
 
+    /**
+     * Adds and subsequently displays a new event created from the user input.
+     * 
+     * @param userInput string representing the event the user intends to create.
+     * @throws InvalidTaskException when there are insufficient or incorrect parameters to initialize a event.
+     */
     private static void addAndDisplayNewEvent(String userInput) throws InvalidTaskException {
         String[] descriptionAndDateTimes = userInput.substring("event ".length()).split("/at ", 2);
         String[] startAndEndDateTimes = descriptionAndDateTimes[1].split("-", 2);
@@ -133,6 +165,11 @@ public class Duke {
         displayAddedTask(newEvent);
     }
 
+    /**
+     * Deletes and subsquently displays the task at the input task index.
+     * 
+     * @param taskIndex task index of the task to be deleted.
+     */
     private static void deleteAndDisplayTask(int taskIndex) {
         Task task = tasks.get(taskIndex);
         tasks.remove(taskIndex);
@@ -140,6 +177,11 @@ public class Duke {
         dukeReply("I have removed the following task:\n  " + task + "\nNow you have " + tasks.size() + " tasks in the list.");
     }
 
+    /**
+     * Sends the input reply string to the user after formatting it.
+     * 
+     * @param reply input string to be formatted.
+     */
     private static void dukeReply(String reply) {
         String enclosingLine = "    ____________________________________________________________";
         String indentedReply = reply.replaceAll("\n", "\n     ");

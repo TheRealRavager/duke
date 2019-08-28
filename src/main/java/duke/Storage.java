@@ -14,11 +14,19 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Storage class is responsible for reading/writing tasks from/to a save file.
+ */
 public class Storage {
-    // save tasks as:
-    // taskType|isDone|description|otherFields
+    // Tasks saved in following format: taskType|isDone|description|otherFields
+    /** Directory of saved tasks. */
     private final String SAVE_DIRECTORY = "../../../data/duke.txt";
 
+    /**
+     * Loads tasks from the save file into an arraylist and returns it.
+     * 
+     * @return an arraylist containing the saved tasks.
+     */
     public ArrayList<Task> load() {
         ArrayList<Task> tasks = new ArrayList<>(100);
         try {
@@ -51,6 +59,11 @@ public class Storage {
         return tasks;
     }
 
+    /**
+     * Writes the input task list to the save file directory.
+     * 
+     * @param tasks input task list containing all the current tasks.
+     */
     public void save(ArrayList<Task> tasks) {
         try {
             FileWriter fw = new FileWriter(SAVE_DIRECTORY);
@@ -64,6 +77,13 @@ public class Storage {
         }
     }
 
+    /**
+     * Parses the input lines to create tasks.
+     * 
+     * @param line input line from the save file.
+     * @return a task created from the input line.
+     * @throws InvalidTaskException when the task type is unrecognized.
+     */
     private Task parseFileToDuke(String line) throws InvalidTaskException {
         String[] taskDetails = line.split("\\|");
         String taskType = taskDetails[0];
@@ -86,9 +106,13 @@ public class Storage {
         return task;
     }
 
+    /**
+     * Parses the input list of tasks into a single string containing all the tasks.
+     * 
+     * @param tasks input list of tasks to be parsed.
+     * @return a single string containing all the tasks.
+     */
     private String parseDukeToFile(ArrayList<Task> tasks) {
-        // TODO: may cause ordering issues
-        // TODO: find better way to identify tasks
         String parsedTasks = "";
         for (Task task : tasks) {
             String parsedTask = "";
@@ -103,9 +127,4 @@ public class Storage {
         }
         return parsedTasks;
     }
-}
-
-// TODO: Stores codes for tasks i.e T = todo, D = deadline, E = event etc
-enum taskCode {
-
 }
