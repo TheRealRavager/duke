@@ -26,3 +26,4 @@ bin/
 *.tar.gz
 *.rar
 text-ui-test/ACTUAL.TXT
+data/duke.txt
