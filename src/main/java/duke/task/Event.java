@@ -14,6 +14,14 @@ public class Event extends Task {
         validate();
     }
 
+    public Event(String[] input) throws InvalidTaskException {
+        super(input[2]);
+        isDone = input[1].equals("1");
+        startDateTime = input[3];
+        endDateTime = input[4];
+        validate();
+    }
+ 
     protected void validate() throws InvalidTaskException {
         String errorMessage = "";
         if (description.isBlank()) {
@@ -33,6 +41,14 @@ public class Event extends Task {
     }
 
     // Getters/setters
+
+    public String getStartDateTime() {
+        return startDateTime;
+    }
+
+    public String getEndDateTime() {
+        return endDateTime;
+    }
 
     // TODO: display "date startTime-endTime" if same day, else "startDateTime - endDateTime"
     public String getInfo() {

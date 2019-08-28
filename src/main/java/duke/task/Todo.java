@@ -8,6 +8,12 @@ public class Todo extends Task {
         validate();
     }
 
+    public Todo(String[] input) throws InvalidTaskException {
+        super(input[2]);
+        isDone = input[1].equals("1");
+        validate();
+    }
+
     protected void validate() throws InvalidTaskException {
         if (description.isBlank()) {
             throw new InvalidTaskException("Description cannot be blank");

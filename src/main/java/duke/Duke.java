@@ -1,5 +1,7 @@
 package duke;
 
+import duke.InputOutput;
+
 import duke.task.Task;
 import duke.task.Todo;
 import duke.task.Deadline;
@@ -11,7 +13,8 @@ import java.util.Scanner;
 import java.util.ArrayList;
 
 public class Duke {
-    private static ArrayList<Task> tasks = new ArrayList<>(100);
+    private static InputOutput storageHandler = new InputOutput();
+    private static ArrayList<Task> tasks = storageHandler.load();
     public static void main(String[] args) {
         greet();
         respondToInput();
@@ -99,6 +102,7 @@ public class Duke {
     private static void addAndDisplayNewTodo(String userInput) throws InvalidTaskException {
         Todo newTodo = new Todo(userInput.substring("todo ".length()));
         tasks.add(newTodo);
+        storageHandler.save(tasks);
         displayAddedTask(newTodo);
     }
 
@@ -108,6 +112,7 @@ public class Duke {
         String dueDate = descriptionAndDate[1];
         Deadline newDeadline = new Deadline(descriptionAndDate[0], descriptionAndDate[1]);
         tasks.add(newDeadline);
+        storageHandler.save(tasks);
         displayAddedTask(newDeadline);
     }
 
@@ -116,12 +121,14 @@ public class Duke {
         String[] startAndEndDateTimes = descriptionAndDateTimes[1].split("-", 2);
         Event newEvent = new Event(descriptionAndDateTimes[0], startAndEndDateTimes[0], startAndEndDateTimes[1]);
         tasks.add(newEvent);
+        storageHandler.save(tasks);
         displayAddedTask(newEvent);
     }
 
     private static void deleteAndDisplayTask(int taskIndex) {
         Task task = tasks.get(taskIndex);
         tasks.remove(taskIndex);
+        storageHandler.save(tasks);
         dukeReply("I have removed the following task:\n  " + task + "\nNow you have " + tasks.size() + " tasks in the list.");
     }
 
