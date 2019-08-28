@@ -1,43 +1,30 @@
 package duke;
 
-import duke.task.Task;
-import duke.task.Todo;
-import duke.task.Deadline;
-import duke.task.Event;
-import duke.exception.InvalidTaskException;
-
 import java.io.FileNotFoundException;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
+// Handles reading and writing from/to save file via strings
 public class Storage {
     // save tasks as:
     // taskType|isDone|description|otherFields
     private final String SAVE_DIRECTORY = "../../../data/duke.txt";
 
-    public ArrayList<Task> load() {
-        ArrayList<Task> tasks = new ArrayList<>(100);
+    public String load() {
+        String tasks = "";
         try {
             File savedTasks = new File(SAVE_DIRECTORY);
             Scanner sc = new Scanner(savedTasks);
             while (sc.hasNext()) {
-                try {
-                    Task task = parseFileToDuke(sc.nextLine());
-                    tasks.add(task);
-                }
-                // TODO: Should handle "corrupted" saves in a different way.
-                catch (InvalidTaskException e) {
-                    continue;
-                }
+                tasks += "\n" + sc.nextLine();
             }
             sc.close();
         }
         catch (FileNotFoundException e) {
-            System.out.println("No save file found! Creating one!");
+            System.out.println("No existing save file found! Attempting to create one!");
             try {
                 FileWriter fw = new FileWriter(SAVE_DIRECTORY);
                 fw.write("");
@@ -51,11 +38,10 @@ public class Storage {
         return tasks;
     }
 
-    public void save(ArrayList<Task> tasks) {
+    public void save(String tasks) {
         try {
             FileWriter fw = new FileWriter(SAVE_DIRECTORY);
-            String parsedTasks = parseDukeToFile(tasks);
-            fw.write(parsedTasks);
+            fw.write(tasks);
             fw.close();
         }
         catch (IOException e) {
@@ -63,49 +49,4 @@ public class Storage {
             System.out.println("Failed to save changes");
         }
     }
-
-    private Task parseFileToDuke(String line) throws InvalidTaskException {
-        String[] taskDetails = line.split("\\|");
-        String taskType = taskDetails[0];
-        Task task = null;
-
-        switch (taskType) {
-        case "T":
-            task = new Todo(taskDetails);
-            break;
-        case "D":
-            task = new Deadline(taskDetails);
-            break;
-        case "E":
-            task = new Event(taskDetails);
-            break;
-        default:
-            // TODO: Should change this to diff type of exception
-            throw new InvalidTaskException("Unrecognized task!");
-        }
-        return task;
-    }
-
-    private String parseDukeToFile(ArrayList<Task> tasks) {
-        // TODO: may cause ordering issues
-        // TODO: find better way to identify tasks
-        String parsedTasks = "";
-        for (Task task : tasks) {
-            String parsedTask = "";
-            if (task instanceof Todo) {
-                parsedTask = "T|" + (task.getIsDone() ? "1|" : "0|") + task.getDescription();
-            } else if (task instanceof Deadline) {
-                parsedTask = "D|" + (task.getIsDone() ? "1|" : "0|") + task.getDescription() + "|" + ((Deadline) task).getStringifiedDueDate();
-            } else if (task instanceof Event) {
-                parsedTask = "E|" + (task.getIsDone() ? "1|" : "0|") + task.getDescription() + "|" + ((Event) task).getStringifiedStartDateTime() + "|" + ((Event) task).getStringifiedEndDateTime();
-            }
-            parsedTasks += "\n" + parsedTask;
-        }
-        return parsedTasks;
-    }
-}
-
-// TODO: Stores codes for tasks i.e T = todo, D = deadline, E = event etc
-enum taskCode {
-
 }
