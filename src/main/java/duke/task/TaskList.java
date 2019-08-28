@@ -9,7 +9,7 @@ import java.time.format.DateTimeParseException;
 
 public class TaskList {
     private ArrayList<Task> tasks = new ArrayList<>(100);
-    // Task codes representing each type of task
+
     public void createTask(String[] params) throws InvalidTaskException {
         String taskCode = params[0];
         switch (taskCode) {
@@ -71,52 +71,23 @@ public class TaskList {
         }
     }
 
+    public void markTaskAsDone(int index) {
+        tasks.get(index - 1).markAsDone();
+    }
+
+    public void deleteTask(int index) {
+        tasks.remove(index - 1);
+    }
+
     public ArrayList<Task> getTasks() {
         return tasks;
     }
+
+    public Task getTask(int index) {
+        return tasks.get(index - 1);
+    }
+
+    public int size() {
+        return tasks.size();
+    }
 }
-
-
-
-
-
-
-    // private Task parseFileLineToDukeFormat(String line) throws InvalidTaskException {
-    //     String[] taskDetails = line.split("\\|");
-    //     String taskType = taskDetails[0];
-    //     Task task = null;
-
-    //     switch (taskType) {
-    //     case "T":
-    //         task = new Todo(taskDetails);
-    //         break;
-    //     case "D":
-    //         task = new Deadline(taskDetails);
-    //         break;
-    //     case "E":
-    //         task = new Event(taskDetails);
-    //         break;
-    //     default:
-    //         // TODO: Should change this to diff type of exception
-    //         throw new InvalidTaskException("Unrecognized task!");
-    //     }
-    //     return task;
-    // }
-
-    // private String parseDukeLineToFileFormat(ArrayList<Task> tasks) {
-    //     // TODO: may cause ordering issues
-    //     // TODO: find better way to identify tasks
-    //     String parsedTasks = "";
-    //     for (Task task : tasks) {
-    //         String parsedTask = "";
-    //         if (task instanceof Todo) {
-    //             parsedTask = "T|" + (task.getIsDone() ? "1|" : "0|") + task.getDescription();
-    //         } else if (task instanceof Deadline) {
-    //             parsedTask = "D|" + (task.getIsDone() ? "1|" : "0|") + task.getDescription() + "|" + ((Deadline) task).getStringifiedDueDate();
-    //         } else if (task instanceof Event) {
-    //             parsedTask = "E|" + (task.getIsDone() ? "1|" : "0|") + task.getDescription() + "|" + ((Event) task).getStringifiedStartDateTime() + "|" + ((Event) task).getStringifiedEndDateTime();
-    //         }
-    //         parsedTasks += "\n" + parsedTask;
-    //     }
-    //     return parsedTasks;
-    // }

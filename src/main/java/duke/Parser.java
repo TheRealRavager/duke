@@ -5,7 +5,7 @@ import java.util.Arrays;
 import duke.exception.InvalidUserInputException;
 
 public class Parser {
-    private String[] validCommands = {"todo, deadline, event, list, bye, delete, done"};
+    private String[] validCommands = {"todo", "deadline", "event", "list", "bye", "delete", "done"};
 
     // Parse user input
     public String[] parseUserInput(String userInput) throws InvalidUserInputException {
@@ -14,6 +14,10 @@ public class Parser {
         if (!Arrays.asList(validCommands).contains(command)) {
             throw new InvalidUserInputException("Sorry I didn't recognize that command");
         } else {
+            if (commandAndParams.length == 1) {
+                // list, bye commands
+                return commandAndParams;
+            }
             String params = commandAndParams[1];
             switch (command) {
             case "todo":
@@ -23,7 +27,7 @@ public class Parser {
             case "event":
                 return parseEvent(params);
             default:
-                // list, bye, delete, done commands
+                // delete, done commands
                 return commandAndParams;
             }
         }
@@ -54,16 +58,16 @@ public class Parser {
 
     // Parse from storage format to duke processing format and vice versa
 
-    public String[] parseStoredLineToTaskParams(String line) {
-        String[] taskParams = line.split("\\|");
+    public String[] parseStoredTaskToTaskParams(String task) {
+        String[] taskParams = task.split("\\|");
         return taskParams;
     }
 
-    public String parseTaskParamsToStoredLine(String[] taskParams) {
-        String storedLine = "";
+    public String parseTaskParamsToStoredTask(String[] taskParams) {
+        String storedTask = "";
         for (String param : taskParams) {
-            storedLine += "|" + param;
+            storedTask += "|" + param;
         }
-        return storedLine;
+        return storedTask;
     }
 }
