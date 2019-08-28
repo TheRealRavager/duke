@@ -2,12 +2,16 @@ package duke.task;
 
 import duke.exception.InvalidTaskException;
 
-public class Event extends Task {
-    // TODO: change to dateTime
-    private String startDateTime;
-    private String endDateTime;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
-    public Event(String description, String startDateTime, String endDateTime) throws InvalidTaskException {
+public class Event extends Task {
+    public static DateTimeFormatter eventDateTimeFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy HHmm");
+    private static DateTimeFormatter prettifiedDateTimeFormat = DateTimeFormatter.ofPattern("d MMM yy h:mma");
+    private LocalDateTime startDateTime;
+    private LocalDateTime endDateTime;
+
+    public Event(String description, LocalDateTime startDateTime, LocalDateTime endDateTime) throws InvalidTaskException {
         super(description);
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
@@ -27,11 +31,11 @@ public class Event extends Task {
         if (description.isBlank()) {
             errorMessage += "Description cannot be blank";
         }
-        if (startDateTime.isBlank()) {
+        if (startDateTime == null) {
             errorMessage += errorMessage.isBlank() ? "" : "\n";
             errorMessage += "Start time cannot be blank";
         }
-        if (endDateTime.isBlank()) {
+        if (endDateTime == null) {
             errorMessage += errorMessage.isBlank() ? "" : "\n";
             errorMessage += "End time cannot be blank";
         }
@@ -52,7 +56,15 @@ public class Event extends Task {
 
     // TODO: display "date startTime-endTime" if same day, else "startDateTime - endDateTime"
     public String getInfo() {
-        return "[E]" + super.getInfo() + "(at: " + startDateTime + "-" + endDateTime + ")";
+        return "[E]" + super.getInfo() + "(at: " + getStringifiedStartDateTime() + "-" + getStringifiedEndDateTime() + ")";
+    }
+
+    public String getStringifiedStartDateTime() {
+        return startDateTime.format(prettifiedDateTimeFormat);
+    }
+
+    public String getStringifiedEndDateTime() {
+        return endDateTime.format(prettifiedDateTimeFormat);
     }
 
     @Override

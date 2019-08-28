@@ -12,6 +12,9 @@ import duke.exception.InvalidTaskException;
 import java.util.Scanner;
 import java.util.ArrayList;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class Duke {
     private static InputOutput storageHandler = new InputOutput();
     private static ArrayList<Task> tasks = storageHandler.load();
@@ -106,11 +109,12 @@ public class Duke {
         displayAddedTask(newTodo);
     }
 
+    // TODO: add ability to detect improper datetime inputs
     private static void addAndDisplayNewDeadline(String userInput) throws InvalidTaskException {
         String[] descriptionAndDate = userInput.substring("deadline ".length()).split("/by ", 2);
         String description = descriptionAndDate[0];
-        String dueDate = descriptionAndDate[1];
-        Deadline newDeadline = new Deadline(descriptionAndDate[0], descriptionAndDate[1]);
+        LocalDateTime dueDate = LocalDateTime.parse(descriptionAndDate[1].trim(), Deadline.dueDateFormat);
+        Deadline newDeadline = new Deadline(description, dueDate);
         tasks.add(newDeadline);
         storageHandler.save(tasks);
         displayAddedTask(newDeadline);
@@ -119,7 +123,11 @@ public class Duke {
     private static void addAndDisplayNewEvent(String userInput) throws InvalidTaskException {
         String[] descriptionAndDateTimes = userInput.substring("event ".length()).split("/at ", 2);
         String[] startAndEndDateTimes = descriptionAndDateTimes[1].split("-", 2);
-        Event newEvent = new Event(descriptionAndDateTimes[0], startAndEndDateTimes[0], startAndEndDateTimes[1]);
+        String description = descriptionAndDateTimes[0];
+        LocalDateTime startDateTime = LocalDateTime.parse(startAndEndDateTimes[0].trim(), Event.eventDateTimeFormat);
+        LocalDateTime endDateTime = LocalDateTime.parse(startAndEndDateTimes[1].trim(), Event.eventDateTimeFormat);
+
+        Event newEvent = new Event(description, startDateTime, endDateTime);
         tasks.add(newEvent);
         storageHandler.save(tasks);
         displayAddedTask(newEvent);
