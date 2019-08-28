@@ -1,6 +1,6 @@
 package duke;
 
-import duke.InputOutput;
+import duke.Storage;
 
 import duke.task.Task;
 import duke.task.Todo;
@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Duke {
-    private static InputOutput storageHandler = new InputOutput();
+    private static Storage storageHandler = new Storage();
     private static ArrayList<Task> tasks = storageHandler.load();
     public static void main(String[] args) {
         greet();

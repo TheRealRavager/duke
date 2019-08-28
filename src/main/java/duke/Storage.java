@@ -2,9 +2,9 @@ package duke;
 
 import duke.task.Task;
 import duke.task.Todo;
-import duke.exception.InvalidTaskException;
 import duke.task.Deadline;
 import duke.task.Event;
+import duke.exception.InvalidTaskException;
 
 import java.io.FileNotFoundException;
 import java.io.File;
@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class InputOutput {
+public class Storage {
     // save tasks as:
     // taskType|isDone|description|otherFields
     private final String SAVE_DIRECTORY = "../../../data/duke.txt";
@@ -95,9 +95,9 @@ public class InputOutput {
             if (task instanceof Todo) {
                 parsedTask = "T|" + (task.getIsDone() ? "1|" : "0|") + task.getDescription();
             } else if (task instanceof Deadline) {
-                parsedTask = "D|" + (task.getIsDone() ? "1|" : "0|") + task.getDescription() + "|" + ((Deadline) task).getDueDate();
+                parsedTask = "D|" + (task.getIsDone() ? "1|" : "0|") + task.getDescription() + "|" + ((Deadline) task).getStringifiedDueDate();
             } else if (task instanceof Event) {
-                parsedTask = "E|" + (task.getIsDone() ? "1|" : "0|") + task.getDescription() + "|" + ((Event) task).getStartDateTime() + "|" + ((Event) task).getEndDateTime();
+                parsedTask = "E|" + (task.getIsDone() ? "1|" : "0|") + task.getDescription() + "|" + ((Event) task).getStringifiedStartDateTime() + "|" + ((Event) task).getStringifiedEndDateTime();
             }
             parsedTasks += "\n" + parsedTask;
         }
