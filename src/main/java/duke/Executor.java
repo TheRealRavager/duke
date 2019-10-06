@@ -75,6 +75,7 @@ public class Executor {
             reply = e.getMessage();
         } finally {
             storageHandler.save(tasks.getTasks());
+            assert(reply != null);
             return reply;
         }
     }
