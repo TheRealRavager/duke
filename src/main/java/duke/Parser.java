@@ -10,8 +10,15 @@ public class Parser {
     /** Formatter used to parse input due dates. */
     public static final DateTimeFormatter DATEFORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy HHmm");
 
+    /**
+     * Parses user input into Commands for execution.
+     * @param userInput to be parsed.
+     * @return a Command detailing what is to be done next.
+     * @throws InvalidTaskException when the parsed input do not match any Command.
+     */
     public Command parse(String userInput) throws InvalidTaskException {
         String[] splitInput = userInput.split(" ", 2);
+        assert (splitInput.length == 2);
         try {
             CommandType commandType = CommandType.valueOf(CommandType.class, splitInput[0].toUpperCase());
             switch (commandType) {
@@ -35,7 +42,8 @@ public class Parser {
                     String description = splitInput[1];
                     return new TodoCommand(description);
                 } catch (ArrayIndexOutOfBoundsException e) {
-                    throw new InvalidTaskException("Invalid input! Todo has the following format: `todo task_description`");
+                    throw new InvalidTaskException("Invalid input! Todo has the following format:"
+                            + "`todo task_description`");
                 }
                 // `deadline task_description /by dueDate` DateTimeFormat: dd/MM/yyyy HHmm
             case DEADLINE:
@@ -45,8 +53,8 @@ public class Parser {
                     LocalDateTime dueDate = LocalDateTime.parse(descAndDate[1], DATEFORMAT);
                     return new DeadlineCommand(description, dueDate);
                 } catch (ArrayIndexOutOfBoundsException | DateTimeParseException e) {
-                    throw new InvalidTaskException("Invalid input! Deadline has the following format:" +
-                            "`deadline task_description /by dueDate` DateTimeFormat: dd/MM/yyyy HHmm");
+                    throw new InvalidTaskException("Invalid input! Deadline has the following format:"
+                            + "`deadline task_description /by dueDate` DateTimeFormat: dd/MM/yyyy HHmm");
                 }
                 // `event event_description /at startDateTime - endDateTime` DateTimeFormat: dd/MM/yyyy HHmm
             case EVENT:
@@ -58,8 +66,9 @@ public class Parser {
                     LocalDateTime endDateTime = LocalDateTime.parse(startEndDates[1], DATEFORMAT);
                     return new EventCommand(description, startDateTime, endDateTime);
                 } catch (ArrayIndexOutOfBoundsException | DateTimeParseException e) {
-                    throw new InvalidTaskException("Invalid input! Event has the following format:" +
-                            "`event event_description /at startDateTime - endDateTime` DateTimeFormat: dd/MM/yyyy HHmm");
+                    throw new InvalidTaskException("Invalid input! Event has the following format:"
+                            + "`event event_description /at startDateTime"
+                            + " - endDateTime` DateTimeFormat: dd/MM/yyyy HHmm");
                 }
                 // `delete task_number`
             case DELETE:
@@ -67,7 +76,8 @@ public class Parser {
                     Integer index = Integer.parseInt(splitInput[1]);
                     return new DeleteCommand(index);
                 } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
-                    throw new InvalidTaskException("Invalid input! Delete has the following format: `delete task_number`");
+                    throw new InvalidTaskException("Invalid input! Delete has the following format:"
+                            + "`delete task_number`");
                 }
                 // `find search_params`
             case FIND:
@@ -75,7 +85,8 @@ public class Parser {
                     String searchParams = splitInput[1];
                     return new FindCommand(searchParams);
                 } catch (ArrayIndexOutOfBoundsException e) {
-                    throw new InvalidTaskException("Invalid input! Find has the following format: `find search_params`");
+                    throw new InvalidTaskException("Invalid input! Find has the following format:"
+                            + "`find search_params`");
                 }
             // `help`
             case HELP:

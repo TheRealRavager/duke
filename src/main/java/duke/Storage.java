@@ -33,34 +33,31 @@ public class Storage {
         return load(SAVE_DIRECTORY);
     }
 
-    public ArrayList<Task> load(String save_directory) throws InvalidTaskException {
+    public ArrayList<Task> load(String saveDirectory) throws InvalidTaskException {
         ArrayList<Task> tasks = new ArrayList<>(100);
         try {
-            System.out.println("Loading save file from: " + save_directory + " ...");
-            if (Files.notExists(Paths.get(save_directory))) {
+            System.out.println("Loading save file from: " + saveDirectory + " ...");
+            if (Files.notExists(Paths.get(saveDirectory))) {
                 System.out.println("Save file missing! Attempting to create new file...");
             }
-            File savedTasks = new File(save_directory);
+            File savedTasks = new File(saveDirectory);
             Scanner sc = new Scanner(savedTasks);
             while (sc.hasNext()) {
                 try {
                     Task task = parseFileToDuke(sc.nextLine());
                     tasks.add(task);
-                }
-                catch (InvalidTaskException e) {
+                } catch (InvalidTaskException e) {
                     throw new InvalidTaskException("Save file corrupted!");
                 }
             }
             System.out.println("File load successful.");
             sc.close();
-        }
-        catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             try {
-                FileWriter fw = new FileWriter(save_directory);
+                FileWriter fw = new FileWriter(saveDirectory);
                 fw.write("");
                 fw.close();
-            }
-            catch (IOException er) {
+            } catch (IOException er) {
                 throw new InvalidTaskException("Unable to access save directory! Aborting!");
             }
         }
@@ -76,14 +73,13 @@ public class Storage {
         save(tasks, SAVE_DIRECTORY);
     }
 
-    public void save(ArrayList<Task> tasks, String save_directory) {
+    public void save(ArrayList<Task> tasks, String saveDirectory) {
         try {
-            FileWriter fw = new FileWriter(save_directory);
+            FileWriter fw = new FileWriter(saveDirectory);
             String parsedTasks = parseDukeToFile(tasks);
             fw.write(parsedTasks);
             fw.close();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             // TODO: Handle exception properly
             System.out.println("Failed to save changes");
         }
@@ -131,12 +127,12 @@ public class Storage {
             if (task instanceof Todo) {
                 parsedTask = "T|" + (task.getIsDone() ? "1|" : "0|") + task.getDescription();
             } else if (task instanceof Deadline) {
-                parsedTask = "D|" + (task.getIsDone() ? "1|" : "0|") + task.getDescription() + "|" +
-                        ((Deadline) task).getStringifiedDueDate();
+                parsedTask = "D|" + (task.getIsDone() ? "1|" : "0|") + task.getDescription() + "|"
+                        + ((Deadline) task).getStringifiedDueDate();
             } else if (task instanceof Event) {
-                parsedTask = "E|" + (task.getIsDone() ? "1|" : "0|") + task.getDescription() + "|" +
-                        ((Event) task).getStringifiedStartDateTime() + "|" +
-                                ((Event) task).getStringifiedEndDateTime();
+                parsedTask = "E|" + (task.getIsDone() ? "1|" : "0|") + task.getDescription() + "|"
+                        + ((Event) task).getStringifiedStartDateTime() + "|"
+                        + ((Event) task).getStringifiedEndDateTime();
             }
             parsedTasks += parsedTask + "\n";
         }

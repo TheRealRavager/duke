@@ -28,7 +28,8 @@ public class TaskList {
         return deadline;
     }
 
-    public Task addEvent(String description, LocalDateTime startDateTime, LocalDateTime endDateTime) throws InvalidTaskException {
+    public Task addEvent(String description, LocalDateTime startDateTime, LocalDateTime endDateTime)
+            throws InvalidTaskException {
         Event event = new Event(description, startDateTime, endDateTime);
         tasks.add(event);
         return event;

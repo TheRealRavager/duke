@@ -1,4 +1,5 @@
 package duke;
+
 import duke.exception.InvalidTaskException;
 
 import javafx.application.Application;
@@ -28,6 +29,11 @@ public class Duke extends Application {
     private Image duke = new Image(this.getClass().getResourceAsStream("/images/DaDuke.png"));
     private Executor executor;
 
+
+    /**
+     * Creates an executor for Duke and returns Duke.
+     * @return Duke.
+     */
     public Duke setup() {
         try {
             Ui ui = new Ui();
@@ -94,7 +100,7 @@ public class Duke extends Application {
         AnchorPane.setBottomAnchor(sendButton, 1.0);
         AnchorPane.setRightAnchor(sendButton, 1.0);
 
-        AnchorPane.setLeftAnchor(userInput , 1.0);
+        AnchorPane.setLeftAnchor(userInput, 1.0);
         AnchorPane.setBottomAnchor(userInput, 1.0);
 
         sendButton.setOnMouseClicked((event) -> {
