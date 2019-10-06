@@ -100,8 +100,8 @@ public class Event extends Task {
      * @return a nicely formatted string that displays the status and details of an event.
      */
     public String getInfo() {
-        return "[E]" + super.getInfo() + "(at: " + getPrettyStartDateTime() + "-" +
-                getPrettyEndDateTime() + ")";
+        return "[E]" + super.getInfo() + "(at: " + getPrettyStartDateTime() + "-"
+                + getPrettyEndDateTime() + ")";
     }
 
     /**

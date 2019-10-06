@@ -17,13 +17,13 @@ public class Ui {
      * @param task the input task.
      */
     public String displayAddedTask(Task task, ArrayList<Task> tasks) {
-        return dukeReply("Got it. I've added this task:\n  " + task.getInfo() + "\nNow you have " +
-                tasks.size() + " tasks in the list.");
+        return dukeReply("Got it. I've added this task:\n  " + task.getInfo() + "\nNow you have "
+                + tasks.size() + " tasks in the list.");
     }
 
     public String displayDeletedTask(Task task, ArrayList<Task> tasks) {
-        return dukeReply("I have removed the following task:\n  " + task + "\nNow you have " +
-                tasks.size() + " tasks in the list.");
+        return dukeReply("I have removed the following task:\n  " + task + "\nNow you have "
+                + tasks.size() + " tasks in the list.");
     }
 
     /**

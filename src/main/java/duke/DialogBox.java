@@ -54,6 +54,13 @@ public class DialogBox extends HBox {
         return new DialogBox(text, img);
     }
 
+
+    /**
+     * Creates a DialogBox for Duke.
+     * @param text Duke's reply.
+     * @param img Duke's image.
+     * @return
+     */
     public static DialogBox getDukeDialog(String text, Image img) {
         var db = new DialogBox(text, img);
         db.flip();

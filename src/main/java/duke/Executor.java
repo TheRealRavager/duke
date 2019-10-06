@@ -12,6 +12,14 @@ public class Executor {
     private TaskList tasks;
     private Parser parser;
 
+
+    /**
+     * Creates an executor which handles the user input.
+     * @param ui the component that drives ui logic.
+     * @param storageHandler the component responsible for task read and write to file.
+     * @param tasks the component responsible for managing tasks.
+     * @param parser the component responsible for parsing user input.
+     */
     public Executor(Ui ui, Storage storageHandler, TaskList tasks, Parser parser) {
         this.ui = ui;
         this.storageHandler = storageHandler;
@@ -70,12 +78,11 @@ public class Executor {
                 String commands = "BYE, LIST, DONE, TODO, DEADLINE, EVENT, DELETE, FIND";
                 reply = "I don't know what that means! The available commands are: " + commands;
             }
-        }
-        catch (InvalidTaskException e) {
+        } catch (InvalidTaskException e) {
             reply = e.getMessage();
         } finally {
             storageHandler.save(tasks.getTasks());
-            assert(reply != null);
+            assert (reply != null);
             return reply;
         }
     }
