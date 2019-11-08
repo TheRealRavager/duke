@@ -12,6 +12,7 @@ public class Parser {
 
     public Command parse(String userInput) throws InvalidTaskException {
         String[] splitInput = userInput.split(" ", 2);
+        assert(splitInput.length == 2);
         try {
             CommandType commandType = CommandType.valueOf(CommandType.class, splitInput[0].toUpperCase());
             switch (commandType) {
